@@ -33,6 +33,6 @@ export default {
 	width: 95%;
 	height: 100%;
 	float: right;
-	background-color: #F9FAFC;
+	background-color: #F8F8F8;
 }
 </style>
