@@ -135,8 +135,6 @@ export default {
 			console.log(err);
 			alert('获取数据失败！')
 		});
-		
-		
 	},
 	mounted(){
 		var docuHei = document.body.clientHeight;
@@ -144,9 +142,6 @@ export default {
 	},
 	methods:{
 		addOrder(goods){
-			this.totalsumm=0;
-			this.totalcount=0;
-			
 			// 判断列表中有没有这个商品
 			let isHave = false; 
 			this.tabData.forEach(item=>{
@@ -168,29 +163,42 @@ export default {
 				}
 				this.tabData.push(newgoods)
 			};
-			
-			this.tabData.forEach(item=>{
-				this.totalcount += item.count;
-				this.totalsumm += item.count * item.price
-			});
+			this.getMonny()
 		},
 		sum(){  //  结账
-			//alert(123)
-	
+	    if(this.totalcount!=0){
+	    	this.tabData = [];
+				this.totalsumm=0;
+				this.totalcount=0;
+				this.$message({
+					message: '结账成功，感谢您的光临！',
+					type: 'success'
+				})
+	    }else{
+	    	this.$message.error('不能空结，老板了解你急切的心情！')
+	    }
 		},
-		deleScope(scope){
-			//console.log(scope)
-			let arr = this.tabData.filter(o=>o.goodsId == scope.goodsId);
-			arr[0].count--;
-			if(arr[0].count<=0){
-				arr[0].count=0
-			}
+		deleScope(scope){          //  删除单个商品
+        //  id不同的筛选出来      把id相同的那组帅选掉
+        this.tabData = this.tabData.filter(o=>o.goodsId != scope.goodsId);   
+        this.getMonny()
 		},
-		dele(){
+		dele(){       // 删除订单
 			this.tabData = [];
 			this.totalsumm=0;
 			this.totalcount=0;
 		},
+		getMonny(){
+			this.totalsumm=0;
+			this.totalcount=0;
+			if(this.tabData){
+				this.tabData.forEach(item=>{
+					this.totalcount += item.count;
+					this.totalsumm += item.count * item.price
+				});
+			}
+		}
+		
 	}
   
   
